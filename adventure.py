@@ -102,7 +102,7 @@ def check_for_treasure(has_treasure):
 def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
     """Iterates through each room in dungeon_rooms and prints the room_description."""
     updated_inventory = []
-    player_health = player_stats["health"]
+    temp_player_health = player_stats["health"]
     #The in operator takes every element of dungeon_rooms and assigns them to room.
     # This is very useful in loops like the below for loop.
     for room in dungeon_rooms:
@@ -130,37 +130,36 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
             puzzle_success = random.choice([True, False])
             if puzzle_decision == "solve" and puzzle_success:
                 print(room[3][0])
-                player_health = player_health + room[3][2]
+                temp_player_health = temp_player_health + room[3][2]
             elif puzzle_decision == "solve" and not puzzle_success:
                 print(room[3][1])
-                player_health = player_health + room[3][2]
+                temp_player_health = temp_player_health + room[3][2]
             elif puzzle_decision == "skip":
                 print("You used your knowledge from the staff of wisdom to bypass "
                     "the puzzle.")
-                player_health = player_health + room[3][2]
+                temp_player_health = temp_player_health + room[3][2]
                 player_stats["can_bypass_puzzle"] = False
-            if player_health < 0:
-                player_health = 0
+            if temp_player_health < 0:
+                temp_player_health = 0
                 print("You are barely alive!")
         if room[2] == "trap":
             print("You see a potential trap!")
-            #trap_decision = input("Do you want to disarm or bypass the trap?")
-            trap_decision = "disarm"
+            trap_decision = input("Do you want to disarm or bypass the trap?")
             trap_success = random.choice([True, False])
             if trap_decision == "disarm" and trap_success:
                 print(room[3][0])
-                player_health = player_health + room[3][2]
+                temp_player_health = temp_player_health + room[3][2]
             elif trap_decision == "disarm" and not trap_success:
                 print(room[3][1])
-                player_health = player_health + room[3][2]
-            if player_health < 0:
-                player_health = 0
+                temp_player_health = temp_player_health + room[3][2]
+            if temp_player_health < 0:
+                temp_player_health = 0
                 print("You are barely alive!")
         if room[2] == "none":
             print("There doesn't seem to be a challenge in this room. You move on.")
-            player_health += 0
+            temp_player_health += 0
 
-        player_stats["health"] = player_health
+        player_stats["health"] = temp_player_health
         display_inventory(updated_inventory)
         display_player_status(player_stats)
     try:
