@@ -108,14 +108,14 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
     for room in dungeon_rooms:
         print(room[0])
         if room[0] == "Cryptic Library":
-            clues = ["The treasure is hidden where the dragon sleeps.",
+            possible_clues = ["The treasure is hidden where the dragon sleeps.",
             "The key lies with the gnome.", "Beware the shadows.", "The amulet "
             "unlocks the final door."]
-            selected_clues = random.sample(clues, 2)
+            selected_clues = random.sample(possible_clues, 2)
+            print(selected_clues)
             for clue in selected_clues:
                 find_clue(clues, clue)
             if player_stats["can_bypass_puzzle"]:
-                can_bypass_puzzle = True
                 print("You understand the meaning of the clues and can bypass a "
                 "puzzle challenge in one other room.")
         if room[1]:
@@ -257,7 +257,8 @@ def main():
                 display_player_status(player_stats)
 
         if player_stats['health'] > 0:
-            player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms, clues)
+            player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms,
+            clues)
 
             print("\n--- Game End ---")
             display_player_status(player_stats)
