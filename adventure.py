@@ -107,12 +107,25 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
     # This is very useful in loops like the below for loop.
     for room in dungeon_rooms:
         print(room[0])
+        if room[0] == "Cryptic Library":
+            clues = ["The treasure is hidden where the dragon sleeps.",
+            "The key lies with the gnome.", "Beware the shadows.", "The amulet "
+            "unlocks the final door."]
+            selected_clues = random.sample(clues, 2)
+            for clue in selected_clues:
+                find_clue(clues, clue)
+            if player_stats["can_bypass_puzzle"]:
+                print("You understand the meaning of the clues and can bypass a "
+                "puzzle challenge in one other room.")
         if room[1]:
             print(f"You found a {room[1]} in the room.")
             updated_inventory = acquire_item(inventory, room[1])
         if room[2] == "puzzle":
             print("You encounter a puzzle!")
-            puzzle_decision = input("Would you like to solve or skip the puzzle?")
+            if player_stats["can_bypass_puzzle"]:
+                puzzle_decision = input("Would you like to solve or skip the puzzle?")
+            else:
+                puzzle_decision = "solve"
             puzzle_success = random.choice([True, False])
             if puzzle_decision == "solve" and puzzle_success:
                 print(room[3][0])
@@ -120,11 +133,11 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
             elif puzzle_decision == "solve" and not puzzle_success:
                 print(room[3][1])
                 player_health = player_health + room[3][2]
-            #elif puzzle_decision == "skip" and can_bypass:
-                #print("You used your knowledge from the staff of wisdom to bypass "
-                    #"the puzzle.")
-                #player_health = player_health + room[3][2]
-                #can_bypass = False   
+            elif puzzle_decision == "skip":
+                print("You used your knowledge from the staff of wisdom to bypass "
+                    "the puzzle.")
+                player_health = player_health + room[3][2]
+                player_stats["can_bypass_puzzle"] = False
             if player_health < 0:
                 player_health = 0
                 print("You are barely alive!")
@@ -141,19 +154,6 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
             if player_health < 0:
                 player_health = 0
                 print("You are barely alive!")
-        if room[2] == "library":
-            clues = ["The treasure is hidden where the dragon sleeps.", 
-                "The key lies with the gnome.", "Beware the shadows.", "The amulet "
-                "unlocks the final door."]
-            selected_clues = random.sample(clues, 2)
-            for clue in selected_clues:
-                find_clues(clues, clue)
-            #if "staff_of_wisdom" not in artifacts:
-                #print("You now understand the meaning of the clues. You can now "
-                    #"bypass a puzzle challenge in one of the other rooms.")
-                #can_bypass = True
-
-
         if room[2] == "none":
             print("There doesn't seem to be a challenge in this room. You move on.")
             player_health += 0
@@ -171,24 +171,29 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
     return player_stats, updated_inventory, clues
 
 def discover_artifact(player_stats, artifacts, artifact_name):
+    """Player discovers an artifact, it is then removed from the dictionary so
+    it can only be found once."""
     if artifact_name in artifacts: #The in operator checks if the artifact is in the dictionary
         print(artifacts[artifact_name]["description"])
         if artifacts[artifact_name]["effect"] == "increases health":
             player_stats["health"] += artifacts[artifact_name]["power"]
         elif artifacts[artifact_name]["effect"] == "enhances attack":
             player_stats["attack"] += artifacts[artifact_name]["power"]
+        elif artifacts[artifact_name]["effect"] == "solves puzzles":
+            player_stats["can_bypass_puzzle"] = True
         print(f"This artifact had this effect: {artifacts[artifact_name]["effect"]}" )
         del artifacts[artifact_name] #The remove operation removes the specific artifact
     else:
         print("You found nothing of interest.")
     return player_stats, artifacts
 
-def find_clues(clues, new_clue):
+def find_clue(clues, new_clue):
+    """If a clue is found, it is added to the clues set."""
     if new_clue in clues:
         print("You already know this clue.")
     else:
-        clues.add(new_clue)
-        print(f"You discovered a new clue: {new_clue}")    
+        clues.add(new_clue) #.add() will add the clue string to the clues set
+        print(f"You discovered a new clue: {new_clue}")
     return clues
 
 def main():
@@ -205,7 +210,7 @@ def main():
         ("Cracked code!", "Chest locked.", -5)),
         ]
 
-    player_stats = {'health': 100, 'attack': 5}
+    player_stats = {'health': 100, 'attack': 5, 'can_bypass_puzzle': False}
 
     monster_health = 70
 
@@ -251,7 +256,9 @@ def main():
                 display_player_status(player_stats)
 
         if player_stats['health'] > 0:
-            player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms, clues)
+            player_stats, inventory, clues = enter_dungeon(player_stats, inventory,
+            dungeon_rooms, clues)
+
             print("\n--- Game End ---")
             display_player_status(player_stats)
             print("Final Inventory:")
@@ -266,6 +273,3 @@ def main():
 #Will run the main function
 if __name__ == "__main__":
     main()
-
-
-'''Note: i still need to figure out what to do for the staff of wisdom'''
