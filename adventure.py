@@ -164,7 +164,7 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
         display_player_status(player_stats)
     try:
         #The del method will take the element in index 1 of room and remove it from room
-        del dungeon_rooms[0][1] #Here, we try to remove the item from the first room
+        del dungeon_rooms[0] #Here, we try to remove the first room
     except TypeError:
         print("Error: Tuples like room in dungeon_rooms are immutable. This means that the rooms "
             "cannot be changed once they are defined. Thus, del dungeon_rooms[0][1] produces "
@@ -258,7 +258,7 @@ def main():
 
         if player_stats['health'] > 0:
             player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms,
-            clues)
+                clues)
 
             print("\n--- Game End ---")
             display_player_status(player_stats)
