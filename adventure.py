@@ -144,7 +144,8 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
                 print("You are barely alive!")
         if room[2] == "trap":
             print("You see a potential trap!")
-            trap_decision = input("Do you want to disarm or bypass the trap?")
+            #trap_decision = input("Do you want to disarm or bypass the trap?")
+            trap_decision = "disarm"
             trap_success = random.choice([True, False])
             if trap_decision == "disarm" and trap_success:
                 print(room[3][0])
