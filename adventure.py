@@ -33,14 +33,14 @@ def display_inventory(inventory):
 
 def display_player_status(player_stats):
     """Prints the player's current health to the console in a user-friendly format."""
-    player_health_value = player_stats["health"]
-    player_attack_value = player_stats["attack"]
+    player_health_value = player_stats['health']
+    player_attack_value = player_stats['attack']
     print(f"Your current health: {player_health_value}")
     print(f"Your current attack: {player_attack_value}")
 
 def handle_path_choice(player_stats):
     """Randomly chooses a path for the player."""
-    player_health = player_stats["health"]
+    player_health = player_stats['health']
     player_path = random.choice(["left","right"])
     if player_path == "left":
         print("You encounter a friendly gnome who heals you for 10 health points.")
@@ -52,7 +52,7 @@ def handle_path_choice(player_stats):
         if player_health < 0:
             player_health = 0
             print("You are barely alive!")
-    player_stats["health"] = player_health
+    player_stats['health'] = player_health
     return player_stats
 
 def player_attack(monster_health):
@@ -76,7 +76,7 @@ def monster_attack(player_health):
 
 def combat_encounter(player_stats, monster_health, has_treasure):
     """Manages the combat encounter using a while loop."""
-    player_health = player_stats["health"]
+    player_health = player_stats['health']
     while player_health > 0 and monster_health > 0:
         monster_health = player_attack(monster_health)
         if monster_health <= 0:
@@ -87,7 +87,7 @@ def combat_encounter(player_stats, monster_health, has_treasure):
             print("Game Over!")
             has_treasure = False
             break
-        player_stats["health"] = player_health
+        player_stats['health'] = player_health
         display_player_status(player_stats)
     return has_treasure # boolean
 
@@ -102,7 +102,7 @@ def check_for_treasure(has_treasure):
 def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
     """Iterates through each room in dungeon_rooms and prints the room_description."""
     updated_inventory = []
-    temp_player_health = player_stats["health"]
+    temp_player_health = player_stats['health']
     #The in operator takes every element of dungeon_rooms and assigns them to room.
     # This is very useful in loops like the below for loop.
     for room in dungeon_rooms:
@@ -115,7 +115,7 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
             print(selected_clues)
             for clue in selected_clues:
                 find_clue(clues, clue)
-            if player_stats["can_bypass_puzzle"]:
+            if player_stats['can_bypass_puzzle']:
                 print("You understand the meaning of the clues and can bypass a "
                 "puzzle challenge in one other room.")
         if room[1]:
@@ -123,7 +123,7 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
             updated_inventory = acquire_item(inventory, room[1])
         if room[2] == "puzzle":
             print("You encounter a puzzle!")
-            if player_stats["can_bypass_puzzle"]:
+            if player_stats['can_bypass_puzzle']:
                 puzzle_decision = input("Would you like to solve or skip the puzzle?")
             else:
                 puzzle_decision = "solve"
@@ -138,7 +138,7 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
                 print("You used your knowledge from the staff of wisdom to bypass "
                     "the puzzle.")
                 temp_player_health = temp_player_health + room[3][2]
-                player_stats["can_bypass_puzzle"] = False
+                player_stats['can_bypass_puzzle'] = False
             if temp_player_health < 0:
                 temp_player_health = 0
                 print("You are barely alive!")
@@ -159,7 +159,7 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
             print("There doesn't seem to be a challenge in this room. You move on.")
             temp_player_health += 0
 
-        player_stats["health"] = temp_player_health
+        player_stats['health'] = temp_player_health
         display_inventory(updated_inventory)
         display_player_status(player_stats)
     try:
@@ -177,11 +177,11 @@ def discover_artifact(player_stats, artifacts, artifact_name):
     if artifact_name in artifacts: #The in operator checks if the artifact is in the dictionary
         print(artifacts[artifact_name]["description"])
         if artifacts[artifact_name]["effect"] == "increases health":
-            player_stats["health"] += artifacts[artifact_name]["power"]
+            player_stats['health'] += artifacts[artifact_name]["power"]
         elif artifacts[artifact_name]["effect"] == "enhances attack":
-            player_stats["attack"] += artifacts[artifact_name]["power"]
+            player_stats['attack'] += artifacts[artifact_name]["power"]
         elif artifacts[artifact_name]["effect"] == "solves puzzles":
-            player_stats["can_bypass_puzzle"] = True
+            player_stats['can_bypass_puzzle'] = True
         print(f"This artifact had this effect: {artifacts[artifact_name]["effect"]}" )
         del artifacts[artifact_name] #The remove operation removes the specific artifact
     else:
