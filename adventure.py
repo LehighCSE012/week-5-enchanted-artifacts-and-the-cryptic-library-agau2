@@ -33,10 +33,10 @@ def display_inventory(inventory):
 
 def display_player_status(player_stats):
     """Prints the player's current health to the console in a user-friendly format."""
-    player_health = player_stats["health"]
-    player_attack = player_stats["attack"]
-    print(f"Your current health: {player_health}")
-    print(f"Your current attack: {player_attack}")
+    player_health_value = player_stats["health"]
+    player_attack_value = player_stats["attack"]
+    print(f"Your current health: {player_health_value}")
+    print(f"Your current attack: {player_attack_value}")
 
 def handle_path_choice(player_stats):
     """Randomly chooses a path for the player."""
@@ -256,8 +256,7 @@ def main():
                 display_player_status(player_stats)
 
         if player_stats['health'] > 0:
-            player_stats, inventory, clues = enter_dungeon(player_stats, inventory,
-            dungeon_rooms, clues)
+            player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms, clues)
 
             print("\n--- Game End ---")
             display_player_status(player_stats)
