@@ -257,12 +257,8 @@ def main():
                 display_player_status(player_stats)
 
         if player_stats['health'] > 0:
-            try:
-                player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms,
-                clues)
-            except TypeError:
-                print("Error: tuple in enter_dungeon() takes 4 positional arguments but 5 were given")
-
+            player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms,
+            clues)
 
             print("\n--- Game End ---")
             display_player_status(player_stats)
