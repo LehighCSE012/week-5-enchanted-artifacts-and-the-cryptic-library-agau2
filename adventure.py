@@ -175,16 +175,21 @@ def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
 def discover_artifact(player_stats, artifacts, artifact_name):
     """Player discovers an artifact, it is then removed from the dictionary so
     it can only be found once."""
+    temp_player_health = player_stats['health']
+    temp_player_attack = player_stats['attack']
     if artifact_name in artifacts: #The in operator checks if the artifact is in the dictionary
+        temp_artifact_effect = artifacts[artifact_name]["power"]
         print(artifacts[artifact_name]["description"])
         if artifacts[artifact_name]["effect"] == "increases health":
-            player_stats['health'] += artifacts[artifact_name]["power"]
+            temp_player_health += temp_artifact_effect
         elif artifacts[artifact_name]["effect"] == "enhances attack":
-            player_stats['attack'] += artifacts[artifact_name]["power"]
+            temp_player_attack += temp_artifact_effect
         elif artifacts[artifact_name]["effect"] == "solves puzzles":
             player_stats['can_bypass_puzzle'] = True
         print(f"This artifact had this effect: {artifacts[artifact_name]["effect"]}" )
         del artifacts[artifact_name] #The remove operation removes the specific artifact
+        player_stats['health'] = temp_player_health
+        player_stats['attack'] = temp_player_attack
     else:
         print("You found nothing of interest.")
     return player_stats, artifacts
