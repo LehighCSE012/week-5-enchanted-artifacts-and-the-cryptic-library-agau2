@@ -101,6 +101,7 @@ def check_for_treasure(has_treasure):
 
 def enter_dungeon(player_stats, inventory, dungeon_rooms, clues):
     """Iterates through each room in dungeon_rooms and prints the room_description."""
+    #print(f"Arguments recieved: ", player_stats, inventory, dungeon_rooms, clues)
     updated_inventory = []
     temp_player_health = player_stats['health']
     #The in operator takes every element of dungeon_rooms and assigns them to room.
@@ -202,13 +203,10 @@ def main():
 
     dungeon_rooms = [
         ("Cryptic Library", None, "library", None),
-        ("Dusty library", "key", "puzzle",
-        ("Solved puzzle!", "Puzzle unsolved.", -5)),
-        ("Narrow passage, creaky floor", "torch", "trap",
-        ("Avoided trap!", "Triggered trap!", -10)),
+        ("Dusty library", "key", "puzzle", ("Solved puzzle!", "Puzzle unsolved.", -5)),
+        ("Narrow passage, creaky floor", "torch", "trap", ("Avoided trap!", "Triggered trap!", -10)),
         ("Grand hall, shimmering pool", "healing potion", "none", None),
-        ("Small room, locked chest", "treasure", "puzzle",
-        ("Cracked code!", "Chest locked.", -5)),
+        ("Small room, locked chest", "treasure", "puzzle", ("Cracked code!", "Chest locked.", -5)),
         ]
 
     player_stats = {'health': 100, 'attack': 5, 'can_bypass_puzzle': False}
@@ -257,6 +255,7 @@ def main():
                 display_player_status(player_stats)
 
         if player_stats['health'] > 0:
+            #print(f"Calling enter_dungeon with:", player_stats, inventory, dungeon_rooms, clues)
             player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms,
             clues)
 
