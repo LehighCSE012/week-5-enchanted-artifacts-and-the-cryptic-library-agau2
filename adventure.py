@@ -257,21 +257,23 @@ def main():
                 display_player_status(player_stats)
 
         if player_stats['health'] > 0:
-            #player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms,
-                #clues)
-            enter_dungeon(player_stats, inventory, dungeon_rooms, clues)
+            try:
+                player_stats, inventory, clues = enter_dungeon(player_stats, inventory, dungeon_rooms,
+                clues)
+            except TypeError:
+                print("Error: tuple in enter_dungeon() takes 4 positional arguments but 5 were given")
 
 
-            #print("\n--- Game End ---")
-            #display_player_status(player_stats)
-            #print("Final Inventory:")
-            #display_inventory(inventory)
-            #print("Clues:")
-            #if clues:
-                #for clue in clues:
-                    #print(f"- {clue}")
-            #else:
-                #print("No clues.")
+            print("\n--- Game End ---")
+            display_player_status(player_stats)
+            print("Final Inventory:")
+            display_inventory(inventory)
+            print("Clues:")
+            if clues:
+                for clue in clues:
+                    print(f"- {clue}")
+            else:
+                print("No clues.")
 
 #Will run the main function
 if __name__ == "__main__":
