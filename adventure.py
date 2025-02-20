@@ -203,10 +203,13 @@ def main():
 
     dungeon_rooms = [
         ("Cryptic Library", None, "library", None),
-        ("Dusty library", "key", "puzzle", ("Solved puzzle!", "Puzzle unsolved.", -5)),
-        ("Narrow passage, creaky floor", "torch", "trap", ("Avoided trap!", "Triggered trap!", -10)),
+        ("Dusty library", "key", "puzzle",
+        ("Solved puzzle!", "Puzzle unsolved.", -5)),
+        ("Narrow passage, creaky floor", "torch", "trap",
+        ("Avoided trap!", "Triggered trap!", -10)),
         ("Grand hall, shimmering pool", "healing potion", "none", None),
-        ("Small room, locked chest", "treasure", "puzzle", ("Cracked code!", "Chest locked.", -5)),
+        ("Small room, locked chest", "treasure", "puzzle",
+        ("Cracked code!", "Chest locked.", -5)),
         ]
 
     player_stats = {'health': 100, 'attack': 5, 'can_bypass_puzzle': False}
